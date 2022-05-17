@@ -1,4 +1,4 @@
-# cameara_stream
+# flutter camera record video
 
 A new Flutter project.
 
