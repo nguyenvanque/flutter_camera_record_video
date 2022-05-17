@@ -2,13 +2,14 @@ import 'dart:async';
 import 'dart:math';
 
 
+import 'package:cameara_stream/camera_record/TextUi.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 
 import 'CameraView.dart';
 import 'VideoView.dart';
-import 'countdownt/count_timer_page.dart';
+import '../countdownt/count_timer_page.dart';
 
 
  List<CameraDescription>? cameras;
@@ -22,14 +23,14 @@ class CameraScreen extends StatefulWidget {
 
 class _CameraScreenState extends State<CameraScreen> {
   CameraController? _cameraController;
-   Future<void>? cameraValue;
+  Future<void>? cameraValue;
   bool isRecoring = false;
   bool isPauseRecoding=false;
   bool flash = false;
   bool iscamerafront = true;
   double transform = 0;
 
-  static const maxSeconds=20;
+  static const maxSeconds=10;
   int seconds=maxSeconds;
   Timer? timer;
 
@@ -114,6 +115,7 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       body: Stack(
         children: [
           FutureBuilder(
@@ -124,12 +126,25 @@ class _CameraScreenState extends State<CameraScreen> {
                       child: Stack(
                         children: [
                           Container(
+
                               width: MediaQuery.of(context).size.width,
                               height: MediaQuery.of(context).size.height*0.85,
+                              padding:const EdgeInsets.only(top:25),
                               child: CameraPreview(_cameraController!)),
-                          Align(
-                              alignment: Alignment.topRight,
-                              child: buildTimer(isRecoring))
+
+                          Padding(
+                            padding: const EdgeInsets.only(top: 15.0),
+                            child: Align(
+                                alignment: Alignment.topRight,
+                                child: buildTimer(isRecoring)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 150),
+                            child: Align(
+                                alignment: Alignment.center,
+                                child: TextUI()),
+                          ),
+
                         ],
                       ));
                 } else {
@@ -138,6 +153,7 @@ class _CameraScreenState extends State<CameraScreen> {
                   );
                 }
               }),
+
           Positioned(
             bottom: 0.0,
             child: Container(
@@ -317,16 +333,16 @@ class _CameraScreenState extends State<CameraScreen> {
  Widget buildTimer(bool isRecodring){
     return isRecodring? Container(
       margin:const EdgeInsets.all(20),
-      width: 60,
-      height: 60,
+      width: 50,
+      height: 50,
       child: Stack(
         fit: StackFit.expand,
         children:  [
           CircularProgressIndicator(
             value:1-seconds/maxSeconds,
-            strokeWidth: 6,
+            strokeWidth: 5,
             valueColor:const AlwaysStoppedAnimation(Colors.white),
-            backgroundColor: Colors.green,
+            backgroundColor: Colors.red,
           ),
           Center(
             child: Text("$seconds",style:const TextStyle(color: Colors.white,fontSize: 14,fontWeight: FontWeight.bold),),
