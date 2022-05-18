@@ -18,24 +18,30 @@ class _VideoPlayListPageState extends State<VideoPlayListPage> {
   @override
   void initState() {
     super.initState();
-  final controller=  _controller = VideoPlayerController.file(File(widget.path[indexVideo]))
 
-    final old = _controller;
+    for(String i in widget.path){
+       print ("Path video $i\n");
+    }
 
-    _controller = controller;
-    // ignore: avoid_single_cascade_in_expression_statements
-    controller ..initialize().then((_) {
-        setState(() {
+    initVideoController(0);
 
-        });
-      });
 
-    _controller.addListener(() {
+  }
+
+  void initVideoController(index){
+     _controller = VideoPlayerController.file(File(widget.path[index]))
+   ..initialize().then((_) {
       setState(() {
 
       });
     });
 
+    _controller.addListener(() {
+      setState(() {
+        print(_controller.value);
+
+      });
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -103,6 +109,7 @@ class _VideoPlayListPageState extends State<VideoPlayListPage> {
                         onTap: (){
                           setState(() {
                             indexVideo++;
+                            initVideoController(indexVideo);
                           });
                         },
                         child: CircleAvatar(
