@@ -1,4 +1,5 @@
 import 'package:cameara_stream/camera_record/CameraScreen.dart';
+import 'package:cameara_stream/camera_record/RecordVideoPage.dart';
 import 'package:cameara_stream/text_speech_camera/home.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,7 @@ import 'package:flutter/material.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  cameras = await availableCameras();
+  camerasList = await availableCameras();
   runApp(const MyApp());
 }
 
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:  CameraScreen(),
+      home:  RecordVideoPage(),
     );
   }
 }

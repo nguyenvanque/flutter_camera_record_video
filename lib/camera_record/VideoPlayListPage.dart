@@ -3,22 +3,28 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
-class VideoViewPage extends StatefulWidget {
-   const VideoViewPage({required this.path});
-  final String path;
+class VideoPlayListPage extends StatefulWidget {
+   VideoPlayListPage({required this.path});
+  final List<String> path;
 
   @override
-  _VideoViewPageState createState() => _VideoViewPageState();
+  _VideoPlayListPageState createState() => _VideoPlayListPageState();
 }
 
-class _VideoViewPageState extends State<VideoViewPage> {
+class _VideoPlayListPageState extends State<VideoPlayListPage> {
   late VideoPlayerController _controller;
+  int indexVideo=0;
 
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.file(File(widget.path))
-      ..initialize().then((_) {
+  final controller=  _controller = VideoPlayerController.file(File(widget.path[indexVideo]))
+
+    final old = _controller;
+
+    _controller = controller;
+    // ignore: avoid_single_cascade_in_expression_statements
+    controller ..initialize().then((_) {
         setState(() {
 
         });
@@ -35,35 +41,6 @@ class _VideoViewPageState extends State<VideoViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      // appBar: AppBar(
-      //   backgroundColor: Colors.black,
-      //   actions: [
-      //     IconButton(
-      //         icon: const Icon(
-      //           Icons.crop_rotate,
-      //           size: 27,
-      //         ),
-      //         onPressed: () {}),
-      //     IconButton(
-      //         icon: const Icon(
-      //           Icons.emoji_emotions_outlined,
-      //           size: 27,
-      //         ),
-      //         onPressed: () {}),
-      //     IconButton(
-      //         icon: const Icon(
-      //           Icons.title,
-      //           size: 27,
-      //         ),
-      //         onPressed: () {}),
-      //     IconButton(
-      //         icon: const Icon(
-      //           Icons.edit,
-      //           size: 27,
-      //         ),
-      //         onPressed: () {}),
-      //   ],
-      // ),
       body: Container(
         padding: const EdgeInsets.only(top: 30),
         width: MediaQuery.of(context).size.width,
@@ -75,25 +52,25 @@ class _VideoViewPageState extends State<VideoViewPage> {
               height: MediaQuery.of(context).size.height *0.9,
               child: _controller.value.isInitialized
                   ? AspectRatio(
-                      aspectRatio: _controller.value.aspectRatio,
-                      child: Stack(
-                        children: [
-                          VideoPlayer(_controller),
-                          Positioned(
-                              top: -5,
-                              width: MediaQuery.of(context).size.width,
-                              child: VideoProgressIndicator(
-                                _controller,
-                                allowScrubbing: false,
+                aspectRatio: _controller.value.aspectRatio,
+                child: Stack(
+                  children: [
+                    VideoPlayer(_controller),
+                    Positioned(
+                        top: -5,
+                        width: MediaQuery.of(context).size.width,
+                        child: VideoProgressIndicator(
+                          _controller,
+                          allowScrubbing: false,
 
-                                colors: const VideoProgressColors(
-                                    backgroundColor: Colors.blueGrey,
-                                    bufferedColor: Colors.blueGrey,
-                                    playedColor: Colors.red),
-                              )),
-                        ],
-                          ),
-                    )
+                          colors: const VideoProgressColors(
+                              backgroundColor: Colors.blueGrey,
+                              bufferedColor: Colors.blueGrey,
+                              playedColor: Colors.red),
+                        )),
+                  ],
+                ),
+              )
                   : Container(),
             ),
 
@@ -122,13 +99,20 @@ class _VideoViewPageState extends State<VideoViewPage> {
                         color: Colors.white,
                         fontSize: 17,
                       ),
-                      suffixIcon: CircleAvatar(
-                        radius: 27,
-                        backgroundColor: Colors.tealAccent[700],
-                        child: const Icon(
-                          Icons.check,
-                          color: Colors.white,
-                          size: 27,
+                      suffixIcon: InkWell(
+                        onTap: (){
+                          setState(() {
+                            indexVideo++;
+                          });
+                        },
+                        child: CircleAvatar(
+                          radius: 27,
+                          backgroundColor: Colors.tealAccent[700],
+                          child: const Icon(
+                            Icons.navigate_next,
+                            color: Colors.white,
+                            size: 27,
+                          ),
                         ),
                       )),
                 ),

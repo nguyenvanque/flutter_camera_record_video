@@ -19,7 +19,7 @@ class _CountTimerPageState extends State<CountTimerPage> {
     if(reset){
       resetTimer();
     }
-    timer=Timer.periodic(Duration(milliseconds:50), (timer) {
+    timer=Timer.periodic(const Duration(milliseconds:50), (timer) {
       if(seconds>0){
         setState(() {
           seconds--;
@@ -63,9 +63,9 @@ class _CountTimerPageState extends State<CountTimerPage> {
 
 Widget  buildTime() {
     if(seconds==0){
-      return Icon(Icons.done,color: Colors.green,size: 130,);
+      return const Icon(Icons.done,color: Colors.green,size: 130,);
     }else{
-      return Text('$seconds',style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold),) ;
+      return Text('$seconds',style: const TextStyle(fontSize: 40,fontWeight: FontWeight.bold),) ;
 
     }
 }
@@ -84,7 +84,6 @@ Widget  buildTime() {
         }),
         const SizedBox(width: 30,),
         ButtonWidget(text: "Cancel", onClicked: (){
-          print("hello");
           stopTimer(reset: true);
         }),
       ],
@@ -103,7 +102,7 @@ Widget  buildTimer() {
           CircularProgressIndicator(
             value:1-seconds/maxSeconds ,
             strokeWidth: 12,
-            valueColor: AlwaysStoppedAnimation(Colors.black),
+            valueColor: const AlwaysStoppedAnimation(Colors.black),
             backgroundColor: Colors.green,
           ),
           Center(

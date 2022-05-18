@@ -8,6 +8,6 @@ final VoidCallback onClicked;
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(onPressed: onClicked,
-        child: Text(text,style: TextStyle(fontSize: 22),));
+        child: Text(text,style: const TextStyle(fontSize: 22),));
   }
 }

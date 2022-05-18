@@ -52,7 +52,7 @@ class _TextUIState extends State<TextUI> {
                             textAlign: TextAlign.center),
                       ),
                     ),
-                    Text("  'Welcome! You use app osyter!'",textAlign: TextAlign.center,
+                    const Text("  'Welcome! You use app osyter!'",textAlign: TextAlign.center,
                         style:TextStyle(color: Colors.black,fontSize: 16,fontWeight: FontWeight.bold))
                   ],
                 )),

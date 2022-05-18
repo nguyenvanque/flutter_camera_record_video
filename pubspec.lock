@@ -399,15 +399,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.8"
-  thumbnails:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "9848d149e72b8dee72cd829af67892812b389279"
-      url: "https://github.com/divyanshub024/Flutter_Thumbnails.git"
-    source: git
-    version: "1.0.1"
   typed_data:
     dependency: transitive
     description:

@@ -3,6 +3,7 @@ import 'dart:math';
 
 
 import 'package:cameara_stream/camera_record/TextUi.dart';
+import 'package:cameara_stream/camera_record/VideoPlayListPage.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
@@ -11,16 +12,16 @@ import 'CameraView.dart';
 import 'VideoView.dart';
 
 
- List<CameraDescription>? cameras;
+List<CameraDescription>? camerasList;
 
-class CameraScreen extends StatefulWidget {
-  CameraScreen({ Key? key}) : super(key: key);
+class RecordVideoPage extends StatefulWidget {
+  RecordVideoPage({ Key? key}) : super(key: key);
 
   @override
-  _CameraScreenState createState() => _CameraScreenState();
+  _RecordVideoPageState createState() => _RecordVideoPageState();
 }
 
-class _CameraScreenState extends State<CameraScreen> {
+class _RecordVideoPageState extends State<RecordVideoPage> {
   CameraController? _cameraController;
 
   Future<void>? cameraValue;
@@ -39,10 +40,10 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   void initState() {
     super.initState();
-    _cameraController = CameraController(cameras![0], ResolutionPreset.high);
+    _cameraController = CameraController(camerasList![0], ResolutionPreset.high);
     cameraValue = _cameraController!.initialize();
   }
-@override
+  @override
   void dispose() {
     super.dispose();
     _cameraController!.dispose();
@@ -79,13 +80,16 @@ class _CameraScreenState extends State<CameraScreen> {
     listPath.add(videopath.path);
     print("listPath.length "+listPath.length.toString());
     print("countVideo "+countVideo.toString());
+    if(countVideo==3){
 
-    // Navigator.push(
-    //     context,
-    //     MaterialPageRoute(
-    //         builder: (builder) => VideoViewPage(
-    //           path: videopath.path,
-    //         )));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (builder) => VideoPlayListPage(
+                path: listPath,
+              )));
+    }
+
   }
 
   void stopTimer({bool reset=true}) {
@@ -115,7 +119,7 @@ class _CameraScreenState extends State<CameraScreen> {
       await _cameraController!.resumeVideoRecording();
     }
     setState(() {
-    isRecoring = true;
+      isRecoring = true;
     });
   }
 
@@ -175,7 +179,7 @@ class _CameraScreenState extends State<CameraScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Expanded(
-                           flex:1,
+                          flex:1,
                           child: buildIconFlag()),
                       isRecoring==false?Container():InkWell(
                           onTap: ()=>pauseRecoding(),
@@ -219,28 +223,28 @@ class _CameraScreenState extends State<CameraScreen> {
                                         path: videopath.path,
                                       )));
                             },
-                                child:  const Icon(
-                                    Icons.radio_button_on,
-                                    color: Colors.red,
-                                    size: 80,
-                                  ),
-                              )
+                            child:  const Icon(
+                              Icons.radio_button_on,
+                              color: Colors.red,
+                              size: 80,
+                            ),
+                          )
                               : InkWell(
                             onTap: ()async{
                               startTimer(context: context);
                               await _cameraController!.startVideoRecording();
                               setState(() {
-                              isRecoring = true;
+                                isRecoring = true;
 
                               });
 
                             },
-                                child: const Icon(
-                                    Icons.panorama_fish_eye,
-                                    color: Colors.white,
-                                    size: 70,
-                                  ),
-                              ),
+                            child: const Icon(
+                              Icons.panorama_fish_eye,
+                              color: Colors.white,
+                              size: 70,
+                            ),
+                          ),
                         ),
                       ),
                       Expanded(
@@ -285,13 +289,13 @@ class _CameraScreenState extends State<CameraScreen> {
               : _cameraController!.setFlashMode(FlashMode.off);
         });
   }
- Widget buildPauseIcons() {
-   if (isPauseRecoding == true) {
-     return const Icon(Icons.play_arrow, color: Colors.white,);
-   } else {
-     return  const Icon(Icons.pause, color: Colors.white,);
-   }
- }
+  Widget buildPauseIcons() {
+    if (isPauseRecoding == true) {
+      return const Icon(Icons.play_arrow, color: Colors.white,);
+    } else {
+      return  const Icon(Icons.pause, color: Colors.white,);
+    }
+  }
   Widget buildIconCamera() {
     return IconButton(
         icon: Transform.rotate(
@@ -309,7 +313,7 @@ class _CameraScreenState extends State<CameraScreen> {
           });
           int cameraPos = iscamerafront ? 0 : 1;
           _cameraController = CameraController(
-              cameras![cameraPos], ResolutionPreset.high);
+              camerasList![cameraPos], ResolutionPreset.high);
           cameraValue = _cameraController!.initialize();
         });
   }
@@ -319,11 +323,11 @@ class _CameraScreenState extends State<CameraScreen> {
         context,
         MaterialPageRoute(
             builder: (builder) => CameraViewPage(
-                  path: file.path
-                )));
+                path: file.path
+            )));
   }
 
- Widget renderText(bool isRecoring) {
+  Widget renderText(bool isRecoring) {
     // if(isRecoring){
     //   return Text("Question there");
     // }else{
@@ -331,13 +335,13 @@ class _CameraScreenState extends State<CameraScreen> {
     // }
     // return isRecoring==true? Text("Question there",style: TextStyle(color: Colors.green,fontSize: 20),):Container();
     return  isRecoring?Container(
-      margin: const EdgeInsets.all(30),
-      width: 200,
+        margin: const EdgeInsets.all(30),
+        width: 200,
         height: 200,
         color: Colors.red,
         child: const Text("Question there",style: TextStyle(color: Colors.green,fontSize: 20),)):Container();
- }
- Widget buildTimer(bool isRecodring){
+  }
+  Widget buildTimer(bool isRecodring){
     return isRecodring? Container(
       margin:const EdgeInsets.all(20),
       width: 50,
@@ -357,7 +361,7 @@ class _CameraScreenState extends State<CameraScreen> {
         ],
       ),
     ):Container();
- }
+  }
 
 
 }
